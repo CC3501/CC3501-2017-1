@@ -1,0 +1,5 @@
+# Archivos compilados de python
+*.pyc
+
+# Archivos de proyecto de Pycharm
+.idea/
