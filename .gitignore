@@ -3,3 +3,6 @@
 
 # Archivos de proyecto de Pycharm
 .idea/
+
+# Archivos de testeo
+.test/
