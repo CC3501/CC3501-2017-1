@@ -94,7 +94,7 @@ class Estanque(object):
         :return:
         """
         fig = plt.figure()
-        ax = fig.add_subplot(121)
+        ax = fig.add_subplot(111)
 
         # Se agrega grafico al plot
         cax = ax.imshow(self.matrix)
