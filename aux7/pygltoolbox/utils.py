@@ -17,7 +17,6 @@ GNU General Public License for more details.
 """
 
 # Importación de liberías
-from __future__ import print_function
 from OpenGL.GLUT import *
 from utils_geometry import *
 
@@ -29,7 +28,7 @@ _ERRS = [False]
 
 def printGLError(err_msg):
     """Imprime un error en consola"""
-    print('[GL-ERROR] {0}'.format(err_msg))
+    print "[GL-ERROR] {0}".format(err_msg)
 
 
 def is_windows():
@@ -82,20 +81,14 @@ def create_axes(s, both=False, text=True):
         glEnd()
 
         if text:  # Se dibujan los nombres de los ejes
-            draw_text("x", Point3(s + 60, 0, -15), [1, 0, 0],
-                      GLUT_BITMAP_HELVETICA_18)
-            draw_text("y", Point3(0, s + 50, -15), [0, 1, 0],
-                      GLUT_BITMAP_HELVETICA_18)
-            draw_text("z", Point3(+0, +0, s + 50), [0, 0, 1],
-                      GLUT_BITMAP_HELVETICA_18)
+            draw_text("x", Point3(s + 60, 0, -15), [1, 0, 0], GLUT_BITMAP_HELVETICA_18)
+            draw_text("y", Point3(0, s + 50, -15), [0, 1, 0], GLUT_BITMAP_HELVETICA_18)
+            draw_text("z", Point3(+0, +0, s + 50), [0, 0, 1], GLUT_BITMAP_HELVETICA_18)
 
             if both:
-                draw_text("-x", Point3(-s - 60, 0, -15), [1, 0, 0],
-                          GLUT_BITMAP_HELVETICA_18)
-                draw_text("-y", Point3(0, -s - 70, -15), [0, 1, 0],
-                          GLUT_BITMAP_HELVETICA_18)
-                draw_text("-z", Point3(+0, +0, -s - 80), [0, 0, 1],
-                          GLUT_BITMAP_HELVETICA_18)
+                draw_text("-x", Point3(-s - 60, 0, -15), [1, 0, 0], GLUT_BITMAP_HELVETICA_18)
+                draw_text("-y", Point3(0, -s - 70, -15), [0, 1, 0], GLUT_BITMAP_HELVETICA_18)
+                draw_text("-z", Point3(+0, +0, -s - 80), [0, 0, 1], GLUT_BITMAP_HELVETICA_18)
 
         # Se retorna la lista
         glEndList()
@@ -106,8 +99,7 @@ def create_axes(s, both=False, text=True):
 
 
 # noinspection PyBroadException
-def draw_text(text, pos, color=COLOR_WHITE, font=GLUT_BITMAP_TIMES_ROMAN_24,
-              linespace=20):
+def draw_text(text, pos, color=COLOR_WHITE, font=GLUT_BITMAP_TIMES_ROMAN_24, linespace=20):
     """Dibuja un texto en una posicon dada por un punto point3"""
     glColor3fv(color)
     if isinstance(pos, Point3):
@@ -124,8 +116,7 @@ def draw_text(text, pos, color=COLOR_WHITE, font=GLUT_BITMAP_TIMES_ROMAN_24,
                     glutBitmapCharacter(font, ord(char))
                 except:
                     if not _ERRS[0]:
-                        printGLError(
-                            'la version actual de OpenGL no posee la funcion glutBitmapCharacter')
+                        printGLError("la version actual de OpenGL no posee la funcion glutBitmapCharacter")
                     _ERRS[0] = True
     else:
         raise Exception("el punto debe ser del tipo point3")

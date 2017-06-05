@@ -17,9 +17,9 @@ GNU General Public License for more details.
 """
 
 # Importación de liberías
-from __future__ import print_function
 from OpenGL.GLU import *
 from utils import *
+
 
 # Definición de constantes
 _OPENGL_CONFIGS = [False]
@@ -78,11 +78,11 @@ def initGl(**kwargs):
     def log(msg):
         """Imprime un mensaje en pantalla"""
         if verbose:
-            print("[GL] {0}".format(msg))
+            print "[GL] {0}".format(msg)
 
     def logInfo(msg):
         """Imprime una informacion en pantalla"""
-        print('[GL-INFO] {0}'.format(msg))
+        print "[GL-INFO] {0}".format(msg)
 
     log("Iniciando OPENGL")
 
@@ -91,8 +91,7 @@ def initGl(**kwargs):
         logInfo("GPU {0}".format(glGetString(GL_VENDOR)))
         logInfo("Renderer {0}".format(glGetString(GL_RENDERER)))
         logInfo("OpenGL version {0}".format(glGetString(GL_VERSION)))
-        logInfo(
-            "SLSL version {0}".format(glGetString(GL_SHADING_LANGUAGE_VERSION)))
+        logInfo("SLSL version {0}".format(glGetString(GL_SHADING_LANGUAGE_VERSION)))
         logInfo("Extensions {0}".format(glGetString(GL_EXTENSIONS)))
 
     # Se define el color de dibujo
@@ -105,8 +104,7 @@ def initGl(**kwargs):
 
     # Se define la profundidad del color de fondo
     if kwargs.get("bgdepth") is not None:
-        log("Se definio la profundidad de color en: {0}".format(
-            kwargs.get("bgdepth")))
+        log("Se definio la profundidad de color en: {0}".format(kwargs.get("bgdepth")))
         glClearDepth(kwargs.get("bgdepth"))
     else:
         log("Se definio la profundidad de color por defecto")
@@ -294,8 +292,7 @@ def initLight(light=GL_LIGHT0, *args, **kwargs):
     if kwargs.get("quad_att") is not None:
         glLightfv(light, GL_QUADRATIC_ATTENUATION, kwargs.get("quad_att"))
     else:
-        glLightfv(light, GL_QUADRATIC_ATTENUATION,
-                  DEFAULT_QUADRATIC_ATTENUATION)
+        glLightfv(light, GL_QUADRATIC_ATTENUATION, DEFAULT_QUADRATIC_ATTENUATION)
 
 
 def islightEnabled():

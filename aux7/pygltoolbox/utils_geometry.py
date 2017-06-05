@@ -88,8 +88,7 @@ def drawVertexListCreateNormal_textured(vertex_list, tvertex_list):
 
 
 # noinspection PyDefaultArgument
-def draw_list(lista, pos=[0.0, 0.0, 0.0], angle=0.0, rot=None, sz=None,
-              rgb=None):
+def draw_list(lista, pos=[0.0, 0.0, 0.0], angle=0.0, rot=None, sz=None, rgb=None):
     """
     Dibuja una lista de OpenGl
 

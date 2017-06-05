@@ -5,20 +5,19 @@ Provee funciones utilitarias para el manejo de texturas.
 """
 
 # Importación de librerías
-from __future__ import print_function
 from OpenGL.GL import *
 import numpy
 
 try:
     from PIL import Image
 except ImportError:
-    print('[ERR] Error al importar la libreria, probando Image')
+    print "[ERR] Error al importar la libreria, probando Image"
     # noinspection PyBroadException
     try:
         # noinspection PyUnresolvedReferences
         import Image
     except:
-        print('[ERR] Error al importar Image, esta aplicacion requiere de PIL')
+        print "[ERR] Error al importar Image, esta aplicacion requiere de PIL"
         exit()
 
 
@@ -40,7 +39,6 @@ def load_texture(image_file, repeat=False):
 
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, img.size[0], img.size[1], 0, GL_RGB,
-                 GL_UNSIGNED_BYTE, data)
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, img.size[0], img.size[1], 0, GL_RGB, GL_UNSIGNED_BYTE, data)
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE)
     return tex

@@ -1,28 +1,212 @@
 # coding=utf-8
-"""
-UTILS MATH
-Herramientas matemáticas utilitarias.
-
-Copyright (C) 2017 Pablo Pizarro @ppizarror
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-"""
 
 # Importación de librerías
 import math
 import types
+from OpenGL.GL import *
+from OpenGL.GLU import *
+from OpenGL.GLUT import *
+
+
+# Constantes
+COLOR_BLACK = [0, 0, 0]
+COLOR_WHITE = [1, 1, 1]
+
+def printGLError(err_msg):
+    """Imprime un error en consola"""
+    print "[GL-ERROR] {0}".format(err_msg)
+
+
+def draw_text(text, pos, color=COLOR_WHITE, font=GLUT_BITMAP_TIMES_ROMAN_24, linespace=20):
+    """Dibuja un texto en una posicon dada por un punto point3"""
+    glColor3fv(color)
+    if isinstance(pos, Point3):
+        x = pos.get_x()
+        y = pos.get_y()
+        z = pos.get_z()
+        glRasterPos3f(x, y, z)
+        for char in text:
+            if char == "\n":
+                y += linespace
+                glRasterPos3f(x, y, z)
+            else:
+                try:
+                    glutBitmapCharacter(font, ord(char))
+                except:
+                    if not _ERRS[0]:
+                        printGLError("la version actual de OpenGL no posee la funcion glutBitmapCharacter")
+                    _ERRS[0] = True
+    else:
+        raise Exception("el punto debe ser del tipo point3")
+
+
+
+def create_axes(s, both=False, text=True):
+    """Dibuja los ejes en pantalla"""
+    # Se convierte la distancia a un entero positivo
+    s = abs(s)
+
+    if s > 0:  # Si es una distancia valida
+
+        # Vectores de dibujo
+        x = Point3(s, 0, 0)
+        y = Point3(0, s, 0)
+        z = Point3(0, 0, s)
+        o = Point3()
+
+        # Se crea nueva lista
+        lista = glGenLists(1)
+        glNewList(lista, GL_COMPILE)
+
+        # Se agregan los vectores al dibujo
+        glBegin(GL_LINES)
+
+        glColor4fv([1, 0, 0, 1])
+        drawVertexList([o, x])
+        glColor4fv([0, 1, 0, 1])
+        drawVertexList([o, y])
+        glColor4fv([0, 0, 1, 1])
+        drawVertexList([o, z])
+
+        if both:  # Se dibujan los ejes en ambos sentidos
+            x = Point3(-s, 0, 0)
+            y = Point3(0, -s, 0)
+            z = Point3(0, 0, -s)
+
+            glColor4fv([1, 0, 0, 1])
+            drawVertexList([o, x])
+            glColor4fv([0, 1, 0, 1])
+            drawVertexList([o, y])
+            glColor4fv([0, 0, 1, 1])
+            drawVertexList([o, z])
+
+        glEnd()
+
+        if text:  # Se dibujan los nombres de los ejes
+            draw_text("x", Point3(s + 60, 0, -15), [1, 0, 0], GLUT_BITMAP_HELVETICA_18)
+            draw_text("y", Point3(0, s + 50, -15), [0, 1, 0], GLUT_BITMAP_HELVETICA_18)
+            draw_text("z", Point3(+0, +0, s + 50), [0, 0, 1], GLUT_BITMAP_HELVETICA_18)
+
+            if both:
+                draw_text("-x", Point3(-s - 60, 0, -15), [1, 0, 0], GLUT_BITMAP_HELVETICA_18)
+                draw_text("-y", Point3(0, -s - 70, -15), [0, 1, 0], GLUT_BITMAP_HELVETICA_18)
+                draw_text("-z", Point3(+0, +0, -s - 80), [0, 0, 1], GLUT_BITMAP_HELVETICA_18)
+
+        # Se retorna la lista
+        glEndList()
+        return lista
+
+    else:
+        raise Exception("la dimension de los ejes debe ser mayor a cero")
+
+
 
 # Constantes
 POINT_2 = "util-point-2"
 POINT_3 = "util-point-3"
+
+def drawVertexList(vertex_list):
+    """Dibuja una lista de puntos Point2/Point3"""
+    if len(vertex_list) >= 1:
+        if vertex_list[0].get_type() == POINT_2:
+            for vertex in vertex_list:
+                glVertex2fv(vertex.export_to_list())
+        elif vertex_list[0].get_type() == POINT_3:
+            for vertex in vertex_list:
+                glVertex3fv(vertex.export_to_list())
+    else:
+        raise Exception("lista vacia")
+
+
+def drawVertexListNormal(normal, vertex_list):
+    """Dibuja una lista de puntos Point2/Point3 con una normal"""
+    if len(vertex_list) >= 3:
+        if isinstance(normal, Vector3):
+            glNormal3fv(normal.export_to_list())
+            drawVertexList(vertex_list)
+        else:
+            raise Exception("la normal debe ser del tipo vector3")
+    else:
+        raise Exceptiom("vertices insucifientes")
+
+
+def drawVertexListCreateNormal(vertex_list):
+    """Dibuja una lista de puntos point2/point3 creando una normal"""
+    if len(vertex_list) >= 3:
+        normal = normal3points(vertex_list[0], vertex_list[1], vertex_list[2])
+        drawVertexListNormal(normal, vertex_list)
+    else:
+        raise Exceptiom("vertices insucifientes")
+
+
+def drawVertexList_textured(vertex_list, tvertex_list):
+    """Dibuja una lista de puntos point2/point3 con una lista Point2 de aristas
+    para modelos texturados"""
+    if len(vertex_list) >= 1:
+        if vertex_list[0].get_type() == POINT_2:
+            for vertex in range(len(vertex_list)):
+                glTexCoord2fv(tvertex_list[vertex].export_to_list())
+                glVertex2fv(vertex_list[vertex].export_to_list())
+        elif vertex_list[0].get_type() == POINT_3:
+            for vertex in range(len(vertex_list)):
+                glTexCoord2fv(tvertex_list[vertex].export_to_list())
+                glVertex3fv(vertex_list[vertex].export_to_list())
+        else:
+            raise Exception("el tipo de vertex_list debe ser POINT2 o POINT3")
+    else:
+        raise Exception("lista vacia")
+
+
+def drawVertexListNormal_textured(normal, vertex_list, tvertex_list):
+    """Dibuja una lista de puntos Point2/Point3 con una lista Point2 de aristas
+    para modelos texturados con una normal"""
+    if len(vertex_list) >= 1:
+        if len(tvertex_list) >= 3:
+            if isinstance(normal, Vector3):
+                glNormal3fv(normal.export_to_list())
+                drawVertexList_textured(vertex_list, tvertex_list)
+            else:
+                raise Exception("la normal debe ser del tipo vector3")
+        else:
+            raise Exception("vertices insuficientes")
+    else:
+        raise Exception("lista vacia")
+
+
+def drawVertexListCreateNormal_textured(vertex_list, tvertex_list):
+    """Dibuja una lista de puntos point3 con una lista Point2 de aristas para modelos
+    texturados creando una normal"""
+    if len(vertex_list) >= 3:
+        normal = normal3points(vertex_list[0], vertex_list[1], vertex_list[2])
+        drawVertexListNormal_textured(normal, vertex_list, tvertex_list)
+    else:
+        raise Exception("vertices insuficientes")
+
+
+# noinspection PyDefaultArgument
+def draw_list(lista, pos=[0.0, 0.0, 0.0], angle=0.0, rot=None, sz=None, rgb=None):
+    """
+    Dibuja una lista de OpenGl
+
+    :param lista: Lista OpenGL
+    :param pos: Posición
+    :param angle: Lista de ángulos a rotar
+    :param rot: Indica si rota o no
+    :param sz: Escalado de imagen
+    :param rgb: Colores del objeto
+    :return:
+    """
+    glPushMatrix()
+    glTranslate(pos[0], pos[1], pos[2])
+    if sz is not None:
+        glScale(sz[0], sz[1], sz[2])
+    if rot is not None:
+        glRotatef(angle, rot[0], rot[1], rot[2])
+    if rgb is not None:
+        glColor4fv(rgb)
+    glCallList(lista)
+    glPopMatrix()
+
 
 
 # noinspection PyMethodFirstArgAssignment
@@ -613,3 +797,4 @@ def xyz_to_spr(x, y, z):
     phi = math.degrees(phi) % 360
     theta = min(max(theta, 0.000001), 180)
     return r, phi, theta
+

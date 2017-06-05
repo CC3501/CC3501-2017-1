@@ -17,7 +17,6 @@ GNU General Public License for more details.
 """
 
 # Importación de librerías
-from __future__ import print_function
 from utils import *
 
 # Definicion de constantes
@@ -33,8 +32,8 @@ OPERATOR_XOR = 0x0f68  # Operador xor
 PARTICLES_ROUND = 2  # Número de decimales
 
 
-# noinspection PyShadowingNames,PyShadowingBuiltins,PyDefaultArgument,PyMissingOrEmptyDocstring
-class Particle(object):
+# noinspection PyShadowingNames,PyShadowingBuiltins,PyDefaultArgument
+class Particle:
     """Partícula"""
 
     def __init__(self, posx=0.0, posy=0.0, posz=0.0):
@@ -380,8 +379,7 @@ class Particle(object):
 
     def add_property(self, propname, value):
         """Agrega una propiedad a la partícula"""
-        if isinstance(propname, types.IntType) or isinstance(propname,
-                                                             types.StringType):
+        if isinstance(propname, types.IntType) or isinstance(propname, types.StringType):
             self.properties[propname] = value
         else:
             raise Exception("la propiedad debe ser de tipo int o string")
@@ -423,8 +421,7 @@ class Particle(object):
                 if operator == OPERATOR_ADD:
                     self.properties[propname] += newvalue
                 elif operator == OPERATOR_AND:
-                    self.properties[propname] = self.properties[
-                                                    propname] and newvalue
+                    self.properties[propname] = self.properties[propname] and newvalue
                 elif operator == OPERATOR_DIFF:
                     self.properties[propname] -= newvalue
                 elif operator == OPERATOR_DIV:
@@ -432,11 +429,9 @@ class Particle(object):
                 elif operator == OPERATOR_MOD:
                     self.properties[propname] %= newvalue
                 elif operator == OPERATOR_OR:
-                    self.properties[propname] = self.properties[
-                                                    propname] or newvalue
+                    self.properties[propname] = self.properties[propname] or newvalue
                 elif operator == OPERATOR_POW:
-                    self.properties[propname] = self.properties[
-                                                    propname] ** newvalue
+                    self.properties[propname] = self.properties[propname] ** newvalue
                 elif operator == OPERATOR_XOR:
                     p = self.properties[propname]
                     q = newvalue
@@ -452,12 +447,12 @@ class Particle(object):
 
     def print_properties(self):
         """Imprime las propiedades de la partícula y sus valores"""
-        print('Properties of: {0}'.format(self.get_name()))
+        print "Properties of: {0}".format(self.get_name())
         for prop in self._get_prop_name():
             if isinstance(prop, types.IntType):
-                print('\t{0} => {1}'.format(prop, self.get_property(prop)))
+                print "\t{0} => {1}".format(prop, self.get_property(prop))
             else:
-                print('\t\'{0}\' => {1}'.format(prop, self.get_property(prop)))
+                print "\t'{0}' => {1}".format(prop, self.get_property(prop))
 
     def __getitem__(self, item):
         """Retorna el elemento en forma de lista"""
@@ -487,19 +482,11 @@ class Particle(object):
 
         msg = 'Particle: {15}\nXYZ position: ({0},{1},{2})\nAngular velocity: ({3},{4},{5}); ({9},{10},{11})\nLinear ' \
               'velocity: ({6},{7},{8})); ({12},{13},{14})\nBinded functions: {16}\nProperties: {17} '
-        return msg.format(round(self.get_x(), PARTICLES_ROUND),
-                          round(self.get_y(), PARTICLES_ROUND),
-                          round(self.get_z(), PARTICLES_ROUND),
-                          round(self.get_ang_vel_x(), PARTICLES_ROUND),
-                          round(self.get_ang_vel_y(), PARTICLES_ROUND),
-                          round(self.get_ang_vel_z(), PARTICLES_ROUND),
-                          round(self.get_vel_x(), PARTICLES_ROUND),
-                          round(self.get_vel_y(), PARTICLES_ROUND),
-                          round(self.get_vel_z(), PARTICLES_ROUND),
-                          onoff(self.has_movement_ang_x()),
+        return msg.format(round(self.get_x(), PARTICLES_ROUND), round(self.get_y(), PARTICLES_ROUND),
+                          round(self.get_z(), PARTICLES_ROUND), round(self.get_ang_vel_x(), PARTICLES_ROUND),
+                          round(self.get_ang_vel_y(), PARTICLES_ROUND), round(self.get_ang_vel_z(), PARTICLES_ROUND),
+                          round(self.get_vel_x(), PARTICLES_ROUND), round(self.get_vel_y(), PARTICLES_ROUND),
+                          round(self.get_vel_z(), PARTICLES_ROUND), onoff(self.has_movement_ang_x()),
                           onoff(self.has_movement_ang_y()),
-                          onoff(self.has_movement_ang_z()),
-                          onoff(self.has_movement_x()),
-                          onoff(self.has_movement_y()),
-                          onoff(self.has_movement_z()), self.get_name(),
-                          getFunctList(), getPropList())
+                          onoff(self.has_movement_ang_z()), onoff(self.has_movement_x()), onoff(self.has_movement_y()),
+                          onoff(self.has_movement_z()), self.get_name(), getFunctList(), getPropList())

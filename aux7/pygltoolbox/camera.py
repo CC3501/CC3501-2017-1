@@ -35,7 +35,7 @@ CAMERA_XYZ = 0x0fa
 
 
 # noinspection PyMethodMayBeStatic
-class _Camera(object):
+class _Camera:
     """Clase abstracta"""
 
     def __init__(self):

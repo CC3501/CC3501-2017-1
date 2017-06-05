@@ -1,4 +1,3 @@
-# coding=utf-8
 """
 PYGLTOOLBOX
 Herramientas para el uso de PyOpenGL de manera sencilla.
@@ -17,4 +16,4 @@ GNU General Public License for more details.
 """
 
 __author__ = 'Pablo Pizarro @ppizarror.com'
-__version__ = 'v1.1'
+__version__ = '1.0'

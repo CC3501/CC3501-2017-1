@@ -35,7 +35,7 @@ for i in range(10):
 
 
 # noinspection PyDefaultArgument
-class VboObject(object):
+class VboObject:
     """Objeto del tipo VBO el cual permite cargar y dibujar elementos usando shaders"""
 
     def __init__(self, vertex, fragment, total_vertex, texture=None):
@@ -102,7 +102,7 @@ class VboObject(object):
 
 def loadOBJModel(file_name):
     """Carga un modelo almacenado en un archivo .obj"""
-    file_text = open(file_name)
+    file_text = open(file_name, "r")
     text = file_text.readlines()
     vertex = []
     normals = []
@@ -198,7 +198,7 @@ def loadGMSHModel(modelfile, scale, dx=0.0, dy=0.0, dz=0.0, avg=True,
 
         # Lee el archivo
         try:
-            infile = open(gmshfile)
+            infile = open(gmshfile, 'r')
         except:
             raise Exception("el archivo del modelo no existe")
 
@@ -337,7 +337,7 @@ def create_circle(rad=1.0, diff=0.1, normal=[0.0, 0.0, 1.0], color=COLOR_WHITE):
         raise Exception("La diferencia debe ser mayor estricto a cero")
 
 
-# noinspection PyBroadException,PyArgumentEqualDefault
+# noinspection PyBroadException
 def create_cone(base=1.0, height=1.0, lat=20, lng=20, color=COLOR_WHITE):
     """Crea un cono de base y altura de radio 1.0"""
     if lat >= 3 and lng >= 10:
@@ -467,7 +467,7 @@ def create_cube_solid(color=COLOR_WHITE):
     return obj
 
 
-# noinspection PyBroadException,PyArgumentEqualDefault
+# noinspection PyBroadException
 def create_piramid(color=COLOR_WHITE):
     """Crea una pirámide de base cuadrada"""
     arista = 2.0
@@ -495,7 +495,7 @@ def create_piramid(color=COLOR_WHITE):
     return obj
 
 
-# noinspection PyBroadException,PyArgumentEqualDefault
+# noinspection PyBroadException
 def create_piramid_textured(texture_list):
     """Crea una pirámide de base cuadrada con texturas"""
     arista = 2.0
@@ -531,7 +531,7 @@ def create_piramid_textured(texture_list):
     return obj
 
 
-# noinspection PyBroadException,PyArgumentEqualDefault
+# noinspection PyBroadException
 def create_diamond(color=COLOR_WHITE):
     """Crea un rombo de base cuadrada"""
     a = Point3(-1.0, -1.0, 0.0)
@@ -606,7 +606,7 @@ def create_teapot_textured(texture_list):
     return obj
 
 
-# noinspection PyBroadException,PyTypeChecker,PyTypeChecker,PyArgumentEqualDefault
+# noinspection PyBroadException,PyTypeChecker,PyTypeChecker
 def create_piramid_vbo(arista=1.0):
     """Crea una piramide de base cuadrada usando vbos para el manejo de shaders, retorna un objeto vboObject"""
 
@@ -640,7 +640,7 @@ def create_piramid_vbo(arista=1.0):
                      vbo.VBO(array(normal_array, 'f')), len(vertex_array))
 
 
-# noinspection PyTypeChecker,PyTypeChecker,PyArgumentEqualDefault
+# noinspection PyTypeChecker,PyTypeChecker
 def create_tetrahedron_vbo(arista=1.0):
     """Crea un tetraedro usando vbos para el manejo de shaders, retorna un objeto vboObject"""
 
