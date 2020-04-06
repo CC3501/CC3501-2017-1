@@ -31,8 +31,8 @@ class Estanque(object):
         self.dh = h
 
         # Almacenamos cantidad de celdas de mi matriz
-        self.w = ancho / h
-        self.h = alto / h
+        self.w = int(ancho / h)
+        self.h = int(alto / h)
 
         # Creamos la matriz (mallado)
         self.matrix = np.zeros((self.h, self.w))
@@ -45,7 +45,7 @@ class Estanque(object):
         Imprime la matriz
         :return:
         """
-        print self.matrix
+        print(self.matrix)
         return ''
 
     def iterate(self):
@@ -106,5 +106,5 @@ class Estanque(object):
 if __name__ == '__main__':
     est = Estanque(100, 30, 1)
     est.iterate()
-    print est
+    print(est)
     est.plot()
